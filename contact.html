@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact & Review - Expense Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="container header-container">
+      <div class="brand-info">
+        <div class="brand-logo-container">
+          <img src="logo.png" alt="Expense Calculator" class="brand-logo" />
+        </div>
+        <p class="subtitle">Smart Financial Management & Monthly Analytics</p>
+      </div>
+
+      <nav class="main-nav" aria-label="Main Navigation">
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+        <a href="analytics.html" class="nav-link">Analytics</a>
+        <a href="download.html" class="nav-link">Download</a>
+        <a href="contact.html" class="nav-link active">Contact / Review</a>
+      </nav>
+
+      <div class="user-profile" id="user-profile-section">
+        <div class="user-avatar" id="user-avatar">?</div>
+        <div class="user-details">
+          <span class="user-name" id="user-name-display">Guest User</span>
+          <span class="user-email" id="user-email-display">Not Logged In</span>
+        </div>
+        <button id="logout-btn" class="btn btn-sm btn-danger-outline" style="margin-left: 8px;">Log Out</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Contact Us Section -->
+    <section class="card" aria-label="Contact Us Section">
+      <div class="card-header margin-bottom-sm">
+        <h2>CONTACT US</h2>
+        <p class="section-desc">Have a question, suggestion, or issue with the application?</p>
+      </div>
+      <div class="contact-info-box margin-top-md">
+        <p class="margin-bottom-sm"><strong>Email Support:</strong> nandlalgupta1809@gmail.com</p>
+        <a href="mailto:nandlalgupta1809@gmail.com?subject=Expense%20Tracker%20Contact" class="btn btn-primary" id="contact-email-btn">
+          Contact via Email
+        </a>
+      </div>
+    </section>
+
+    <!-- Write / Edit Review Form Section -->
+    <section class="card" id="review-form-card" aria-label="Write a Review Section">
+      <div class="card-header margin-bottom-sm">
+        <h2 id="review-form-title">WRITE A REVIEW / FEEDBACK</h2>
+        <p class="section-desc">Share your experience, suggestions, or feedback to help us improve.</p>
+      </div>
+
+      <form id="review-form" class="margin-top-md" novalidate>
+        <input type="hidden" id="review-id" value="" />
+
+        <!-- Star Rating Input -->
+        <div class="form-group">
+          <label>Rating *</label>
+          <div class="star-rating-input" id="star-rating-container" role="radiogroup" aria-label="Rating from 1 to 5 stars">
+            <button type="button" class="star-btn" data-value="1" aria-label="1 star">★</button>
+            <button type="button" class="star-btn" data-value="2" aria-label="2 stars">★</button>
+            <button type="button" class="star-btn" data-value="3" aria-label="3 stars">★</button>
+            <button type="button" class="star-btn" data-value="4" aria-label="4 stars">★</button>
+            <button type="button" class="star-btn" data-value="5" aria-label="5 stars">★</button>
+          </div>
+          <span id="rating-error" class="error-message" role="alert"></span>
+        </div>
+
+        <!-- Optional Review Title -->
+        <div class="form-group">
+          <label for="review-title">Review Title (Optional)</label>
+          <input type="text" id="review-title" maxlength="100" placeholder="e.g. Simple and useful" />
+          <span id="title-error" class="error-message" role="alert"></span>
+        </div>
+
+        <!-- Required Feedback Text -->
+        <div class="form-group">
+          <div class="flex-between">
+            <label for="review-text">Your Feedback *</label>
+            <span id="char-count-display" class="text-muted" style="font-size: 0.75rem;">0 / 1000</span>
+          </div>
+          <textarea id="review-text" rows="4" maxlength="1000" placeholder="Share your experience, suggestions, or feedback..." required></textarea>
+          <span id="text-error" class="error-message" role="alert"></span>
+        </div>
+
+        <div class="form-actions margin-top-sm">
+          <button type="submit" id="submit-review-btn" class="btn btn-primary">Submit Review</button>
+          <button type="button" id="cancel-edit-btn" class="btn btn-secondary hidden">Cancel</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- My Reviews Display Section -->
+    <section class="card" aria-label="My Reviews Section">
+      <div class="card-header margin-bottom-sm">
+        <h2>MY REVIEWS / FEEDBACK</h2>
+        <p class="section-desc">Previously submitted feedback stored locally on this device.</p>
+      </div>
+
+      <div id="my-reviews-container" class="reviews-grid margin-top-md"></div>
+
+      <div id="reviews-empty-state" class="empty-state text-center pad-lg hidden">
+        <p class="text-muted">You haven't submitted any reviews yet.</p>
+        <p class="text-muted" style="font-size: 0.85rem; margin-top: 4px;">Share your experience using the form above.</p>
+      </div>
+    </section>
+
+    <!-- Application Information Section -->
+    <section class="card" aria-label="Application Information Section">
+      <div class="card-header margin-bottom-sm">
+        <h2>ABOUT APPLICATION</h2>
+      </div>
+      <p class="text-muted" style="font-size: 0.95rem; line-height: 1.6;">
+        Expense Tracker is a browser-based expense management application designed to help users record, organize, analyze, and export their expenses efficiently.
+      </p>
+    </section>
+  </main>
+
+  <!-- Delete Review Confirmation Modal -->
+  <div id="confirm-modal" class="modal-overlay hidden" aria-modal="true" role="dialog">
+    <div class="card modal-content" style="max-width: 400px;">
+      <h3 id="modal-title">Delete Review</h3>
+      <p id="modal-desc" class="margin-top-sm text-muted" style="font-size: 0.9rem;">Are you sure you want to delete this review? This action cannot be undone.</p>
+      <div class="form-actions margin-top-md" style="justify-content: flex-end;">
+        <button id="modal-cancel-btn" class="btn btn-secondary">Cancel</button>
+        <button id="modal-confirm-btn" class="btn btn-danger">Confirm Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="app-footer">
+    <div class="container footer-container">
+      <p class="footer-line">Created by Nandlal Gupta | Contact: <a href="mailto:nandlalgupta1809@gmail.com" class="footer-link">nandlalgupta1809@gmail.com</a></p>
+      <p class="footer-line">&copy; 2026 All rights reserved. Disclaimer: This application is provided for expense calculation and personal use only.</p>
+    </div>
+  </footer>
+
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <script src="auth.js"></script>
+  <script src="contact.js"></script>
+</body>
+</html>

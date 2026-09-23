@@ -1,0 +1,99 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up / Login - Expense Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="auth-page-body">
+
+  <header class="app-header">
+    <div class="container header-container">
+      <div class="brand-info">
+        <div class="brand-logo-container">
+          <img src="logo.png" alt="Expense Calculator" class="brand-logo" />
+        </div>
+        <p class="subtitle">Smart Financial Management & Monthly Analytics</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="container auth-container">
+    <section class="card auth-card" aria-label="Account Access">
+      <div class="auth-header">
+        <h1 id="auth-title">Create Account</h1>
+        <p id="auth-subtitle" class="section-desc">Sign up to manage your expenses and track monthly budgets.</p>
+      </div>
+
+      <form id="auth-form" novalidate>
+        <!-- SIGN UP FIELDS (Default Visible for New Users) -->
+        <div id="signup-fields">
+          <div class="form-row-grid">
+            <div class="form-group">
+              <label for="auth-first-name">First Name *</label>
+              <input type="text" id="auth-first-name" placeholder="John" required />
+            </div>
+            <div class="form-group">
+              <label for="auth-last-name">Last Name *</label>
+              <input type="text" id="auth-last-name" placeholder="Doe" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="auth-username">Username *</label>
+            <input type="text" id="auth-username" placeholder="johndoe" required />
+          </div>
+
+          <div class="form-group">
+            <label for="auth-account-type">Expense Purpose / Account Type *</label>
+            <select id="auth-account-type" required>
+              <option value="personal">Personal Expense Tracking</option>
+              <option value="business">Business Expense Tracking</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="auth-email">Gmail / Email Address *</label>
+          <input type="email" id="auth-email" placeholder="name@example.com" required />
+        </div>
+
+        <div class="form-group">
+          <label for="auth-password">Password *</label>
+          <input type="password" id="auth-password" placeholder="••••••••" required />
+        </div>
+
+        <div id="confirm-password-group" class="form-group">
+          <label for="auth-confirm-password">Confirm Password *</label>
+          <input type="password" id="auth-confirm-password" placeholder="••••••••" required />
+        </div>
+
+        <span id="auth-error-msg" class="error-message" role="alert" style="min-height: 1.25rem;"></span>
+
+        <div class="form-actions margin-top-sm">
+          <button type="submit" id="auth-submit-btn" class="btn btn-primary" style="width: 100%;">Create Account</button>
+        </div>
+      </form>
+
+      <div class="auth-toggle-container">
+        <span id="auth-toggle-text">Already have an account?</span>
+        <button type="button" id="toggle-auth-mode-btn" class="btn-link">Log In</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <div class="container footer-container">
+      <p class="footer-line">Created by Nandlal Gupta | Contact: <a href="mailto:nandlalgupta1809@gmail.com" class="footer-link">nandlalgupta1809@gmail.com</a></p>
+      <p class="footer-line">&copy; 2026 All rights reserved. Disclaimer: This application is provided for expense calculation and personal use only.</p>
+    </div>
+  </footer>
+
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <script src="auth.js"></script>
+</body>
+</html>

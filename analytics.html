@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytics - Expense Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Chart.js CDN for standalone chart rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="container header-container">
+      <div class="brand-info">
+        <div class="brand-logo-container">
+          <img src="logo.png" alt="Expense Calculator" class="brand-logo" />
+        </div>
+        <p class="subtitle">Smart Financial Management & Monthly Analytics</p>
+      </div>
+
+      <nav class="main-nav" aria-label="Main Navigation">
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+        <a href="analytics.html" class="nav-link active">Analytics</a>
+        <a href="download.html" class="nav-link">Download</a>
+        <a href="contact.html" class="nav-link">Contact / Review</a>
+      </nav>
+
+      <div class="user-profile" id="user-profile-section">
+        <div class="user-avatar" id="user-avatar">?</div>
+        <div class="user-details">
+          <span class="user-name" id="user-name-display">Guest User</span>
+          <span class="user-email" id="user-email-display">Not Logged In</span>
+        </div>
+        <button id="logout-btn" class="btn btn-sm btn-danger-outline" style="margin-left: 8px;">Log Out</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Period Filter Section -->
+    <section class="month-selector-card" aria-label="Analysis Period Selection">
+      <div class="month-display-container">
+        <h2 id="analytics-month-label">August 2026</h2>
+        <span id="analytics-all-time-badge" class="badge hidden">All Time View</span>
+      </div>
+      <div class="month-actions">
+        <button id="analytics-prev-month-btn" class="btn btn-secondary" aria-label="Previous Month">&larr; Previous</button>
+        <button id="analytics-next-month-btn" class="btn btn-secondary" aria-label="Next Month">Next &rarr;</button>
+        <button id="analytics-toggle-all-btn" class="btn btn-outline">Show All Time</button>
+      </div>
+    </section>
+
+    <!-- Analytics Summary Cards -->
+    <section class="stats-overview-grid" aria-label="Analytics Summary Cards">
+      <div class="stat-card">
+        <h3>Total Expenses</h3>
+        <p id="analytics-total-expenses" class="stat-value">₹0.00</p>
+        <span class="stat-subtext text-muted">Total spent in period</span>
+      </div>
+      <div class="stat-card">
+        <h3>Transactions</h3>
+        <p id="analytics-transaction-count" class="stat-value">0</p>
+        <span class="stat-subtext text-muted">Total number of expenses</span>
+      </div>
+      <div class="stat-card">
+        <h3>Average Expense</h3>
+        <p id="analytics-average-expense" class="stat-value">₹0.00</p>
+        <span class="stat-subtext text-muted">Per transaction</span>
+      </div>
+      <div class="stat-card">
+        <h3>Highest Expense</h3>
+        <p id="analytics-highest-expense" class="stat-value">₹0.00</p>
+        <span id="analytics-highest-subtext" class="stat-subtext text-muted">None</span>
+      </div>
+    </section>
+
+    <!-- Visual Analysis Section -->
+    <div class="analytics-grid">
+      <!-- Category Breakdown Chart -->
+      <section class="card chart-card" aria-label="Category Spending Breakdown">
+        <div class="card-header flex-between margin-bottom-sm">
+          <div>
+            <h2>Category Breakdown</h2>
+            <p class="section-desc">Distribution of expenses by category</p>
+          </div>
+        </div>
+        <div id="category-chart-container" class="chart-box">
+          <canvas id="category-chart-canvas"></canvas>
+        </div>
+        <div id="category-empty-state" class="empty-state text-center pad-lg hidden">
+          <p class="text-muted">No expense data available for this period.</p>
+        </div>
+      </section>
+
+      <!-- Daily Expense Trend Chart -->
+      <section class="card chart-card" aria-label="Daily Spending Trend">
+        <div class="card-header flex-between margin-bottom-sm">
+          <div>
+            <h2>Daily Expense Trend</h2>
+            <p class="section-desc">Chronological daily spending overview</p>
+          </div>
+        </div>
+        <div id="trend-chart-container" class="chart-box">
+          <canvas id="trend-chart-canvas"></canvas>
+        </div>
+        <div id="trend-empty-state" class="empty-state text-center pad-lg hidden">
+          <p class="text-muted">No expense data available for this period.</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Detailed Statistical Analysis & Category List -->
+    <div class="analytics-grid margin-top-md">
+      <!-- Detailed Statistics Card -->
+      <section class="card" aria-label="Detailed Statistical Information">
+        <h2 class="margin-bottom-sm">Statistical Information</h2>
+        <div class="stats-list">
+          <div class="stat-row">
+            <span>Total Spending:</span>
+            <strong id="stat-total-spending">₹0.00</strong>
+          </div>
+          <div class="stat-row">
+            <span>Average Expense:</span>
+            <strong id="stat-avg-expense">₹0.00</strong>
+          </div>
+          <div class="stat-row">
+            <span>Median Expense:</span>
+            <strong id="stat-median-expense">₹0.00</strong>
+          </div>
+          <div class="stat-row">
+            <span>Highest Expense:</span>
+            <strong id="stat-highest-expense">₹0.00</strong>
+          </div>
+          <div class="stat-row">
+            <span>Lowest Expense:</span>
+            <strong id="stat-lowest-expense">₹0.00</strong>
+          </div>
+          <div class="stat-row">
+            <span>Number of Transactions:</span>
+            <strong id="stat-count">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Most Expensive Category:</span>
+            <strong id="stat-top-category">None</strong>
+          </div>
+          <div class="stat-row">
+            <span>Total Categories Used:</span>
+            <strong id="stat-categories-used">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Highest Spending Day:</span>
+            <strong id="stat-peak-day">None</strong>
+          </div>
+          <div class="stat-row">
+            <span>Average Daily Spending:</span>
+            <strong id="stat-daily-avg">₹0.00</strong>
+          </div>
+        </div>
+      </section>
+
+      <!-- Category Totals List Card -->
+      <section class="card" aria-label="Category Spending Summary">
+        <h2 class="margin-bottom-sm">Category Summary List</h2>
+        <div class="table-responsive">
+          <table class="expense-table">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Total Spent</th>
+                <th>Contribution</th>
+              </tr>
+            </thead>
+            <tbody id="category-summary-tbody"></tbody>
+          </table>
+        </div>
+        <div id="category-table-empty" class="empty-state text-center pad-lg hidden">
+          <p class="text-muted">No expense data available for this period.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <div class="container footer-container">
+      <p class="footer-line">Created by Nandlal Gupta | Contact: <a href="mailto:nandlalgupta1809@gmail.com" class="footer-link">nandlalgupta1809@gmail.com</a></p>
+      <p class="footer-line">&copy; 2026 All rights reserved. Disclaimer: This application is provided for expense calculation and personal use only.</p>
+    </div>
+  </footer>
+
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <script src="auth.js"></script>
+  <script src="analytics.js"></script>
+</body>
+</html>

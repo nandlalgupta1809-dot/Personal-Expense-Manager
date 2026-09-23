@@ -1,0 +1,379 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Expense Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="container header-container">
+      <div class="brand-info">
+        <div class="brand-logo-container">
+          <img src="logo.png" alt="Expense Calculator" class="brand-logo" />
+        </div>
+        <p class="subtitle">Smart Financial Management & Monthly Analytics</p>
+      </div>
+
+      <nav class="main-nav" aria-label="Main Navigation">
+        <a href="dashboard.html" class="nav-link active">Dashboard</a>
+        <a href="analytics.html" class="nav-link">Analytics</a>
+        <a href="download.html" class="nav-link">Download</a>
+        <a href="contact.html" class="nav-link">Contact / Review</a>
+      </nav>
+
+      <div class="user-profile" id="user-profile-section">
+        <div class="user-avatar" id="user-avatar">?</div>
+
+        <div class="user-details">
+          <span class="user-name" id="user-name-display">Guest User</span>
+          <span class="user-email" id="user-email-display">Not Logged In</span>
+
+          <button
+            type="button"
+            id="user-id-trigger"
+            class="user-id-trigger"
+            aria-expanded="false"
+            aria-controls="user-details-sheet"
+            title="Show your account details"
+          >
+            ID: <span id="user-id-display">—</span>
+          </button>
+        </div>
+
+        <button id="logout-btn" class="btn btn-sm btn-danger-outline" style="margin-left: 8px;">Log Out</button>
+
+        <div
+          id="user-details-sheet"
+          class="user-details-sheet hidden"
+          role="dialog"
+          aria-label="Your account details"
+          aria-hidden="true"
+        >
+          <div class="profile-sheet-header">Your Details</div>
+
+          <div class="profile-detail-row">
+            <span>User Name</span>
+            <strong id="profile-user-name">—</strong>
+          </div>
+
+          <div class="profile-detail-row">
+            <span>User ID</span>
+            <strong id="profile-user-id">—</strong>
+          </div>
+
+          <div class="profile-detail-row">
+            <span>Gmail</span>
+            <strong id="profile-user-email">—</strong>
+          </div>
+
+          <div class="profile-detail-row">
+            <span>Using Application For</span>
+            <strong id="profile-account-type">—</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Welcome Greeting -->
+    <section class="card welcome-card" style="margin-bottom: 20px; padding: 16px 20px;">
+      <h1 id="welcome-heading" style="font-size: 1.5rem; font-weight: 700;">Hello, User</h1>
+      <p class="text-muted" style="font-size: 0.9rem; margin-top: 2px;">Manage your expenses, set target budgets, and track monthly spending.</p>
+    </section>
+
+    <!-- Month Selector -->
+    <section class="month-selector-card" aria-label="Month Selection">
+      <button id="prev-month-btn" class="btn btn-secondary" aria-label="Previous Month">&larr; Previous</button>
+      <div class="month-display-container">
+        <h2 id="current-month-label">August 2026</h2>
+        <span id="all-time-badge" class="badge hidden">All Time View</span>
+      </div>
+      <div class="month-actions">
+        <button id="next-month-btn" class="btn btn-secondary" aria-label="Next Month">Next &rarr;</button>
+        <button id="toggle-all-months-btn" class="btn btn-outline">Show All Time</button>
+      </div>
+    </section>
+
+    <!-- Spending Insights -->
+    <section class="card smart-insights-card" aria-label="Financial Insights">
+      <div class="card-header flex-between">
+        <div>
+          <h2>Spending Insights</h2>
+          <p class="section-desc">Automated descriptive observations based on your spending data</p>
+        </div>
+      </div>
+      <div id="insights-container" class="insights-container"></div>
+    </section>
+
+    <!-- Summary Cards -->
+    <section class="stats-overview-grid" aria-label="Monthly Financial Statistics">
+      <div class="stat-card">
+        <h3>Total Spending</h3>
+        <p id="monthly-total" class="stat-value">₹0.00</p>
+        <span id="mom-comparison-subtext" class="stat-subtext text-muted">No comparison available</span>
+      </div>
+      <div class="stat-card">
+        <h3>Daily Average</h3>
+        <p id="monthly-daily-average" class="stat-value">₹0.00</p>
+        <span id="daily-avg-subtext" class="stat-subtext text-muted">Per active month day</span>
+      </div>
+      <div class="stat-card">
+        <h3>Highest Single Expense</h3>
+        <p id="monthly-highest" class="stat-value">₹0.00</p>
+        <span id="highest-expense-subtext" class="stat-subtext text-muted">None recorded</span>
+      </div>
+      <div class="stat-card">
+        <h3>Total Expenses</h3>
+        <p id="monthly-count" class="stat-value">0</p>
+        <span id="expense-count-subtext" class="stat-subtext text-muted">Recorded expenses</span>
+      </div>
+      <div class="stat-card">
+        <h3>Average Expense</h3>
+        <p id="monthly-average" class="stat-value">₹0.00</p>
+        <span id="average-expense-subtext" class="stat-subtext text-muted">Per transaction</span>
+      </div>
+      <div class="stat-card">
+        <h3>Top Spending Category</h3>
+        <p id="top-category-name" class="stat-value">None</p>
+        <span id="top-category-subtext" class="stat-subtext text-muted">0.0% of monthly total</span>
+      </div>
+      <div class="stat-card">
+        <h3>Peak Spending Day</h3>
+        <p id="highest-spending-day" class="stat-value">None</p>
+        <span id="highest-day-subtext" class="stat-subtext text-muted">₹0.00 spent</span>
+      </div>
+    </section>
+
+    <!-- Budget Section -->
+    <section class="card budget-card" aria-label="Monthly Budget Tracker">
+      <div class="card-header flex-between">
+        <div>
+          <h2>Monthly Target Budget</h2>
+          <p id="budget-month-subtitle" class="section-desc">Setting target budget for current month</p>
+        </div>
+        <span id="budget-status-badge" class="status-badge status-none">No Budget Set</span>
+      </div>
+
+      <div class="budget-content-grid">
+        <div class="budget-form-container">
+          <form id="budget-form" novalidate>
+            <div class="form-group">
+              <label for="budget-input">Set Budget for <span id="budget-form-month">Selected Month</span></label>
+              <div class="input-with-symbol">
+                <span class="currency-symbol">₹</span>
+                <input type="number" id="budget-input" placeholder="e.g. 10000" step="0.01" min="0.01" aria-describedby="budget-error" />
+              </div>
+              <span id="budget-error" class="error-message" role="alert"></span>
+            </div>
+            <div class="form-actions">
+              <button type="submit" id="save-budget-btn" class="btn btn-primary">Set Budget</button>
+              <button type="button" id="clear-budget-btn" class="btn btn-secondary hidden">Clear Budget</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="budget-metrics-container">
+          <div class="budget-metrics-grid">
+            <div class="metric-box">
+              <span class="metric-label">Budget</span>
+              <span id="budget-amount-display" class="metric-value">₹0.00</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-label">Spent</span>
+              <span id="budget-spent-display" class="metric-value">₹0.00</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-label">Remaining</span>
+              <span id="budget-remaining-display" class="metric-value">₹0.00</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-label">Used</span>
+              <span id="budget-percentage-display" class="metric-value">0%</span>
+            </div>
+          </div>
+
+          <div class="progress-bar-container">
+            <div class="progress-bar-header">
+              <span>Budget Consumption</span>
+              <span id="progress-text-display">₹0.00 spent</span>
+            </div>
+            <div class="progress-bar-track">
+              <div id="budget-progress-fill" class="progress-bar-fill fill-normal" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Expense Management Grid -->
+    <div class="dashboard-grid">
+      <!-- Add / Edit Expense Form -->
+      <section class="card form-card" aria-label="Add or Edit Expense">
+        <h2 id="form-title">Add New Expense</h2>
+        <form id="expense-form" novalidate style="margin-top: 16px;">
+          <input type="hidden" id="expense-id" />
+
+          <div class="form-group">
+            <label for="expense-title">Title *</label>
+            <input type="text" id="expense-title" placeholder="e.g. Grocery Shopping" required aria-describedby="title-error" />
+            <span id="title-error" class="error-message" role="alert"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="expense-amount">Amount (₹) *</label>
+            <input type="number" id="expense-amount" placeholder="0.00" step="0.01" min="0.01" required aria-describedby="amount-error" />
+            <span id="amount-error" class="error-message" role="alert"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="expense-category">Category *</label>
+            <select id="expense-category" required aria-describedby="category-error">
+              <option value="">Select Category</option>
+              <option value="Food & Dining">Food & Dining</option>
+              <option value="Transportation">Transportation</option>
+              <option value="Utilities">Utilities</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Shopping">Shopping</option>
+              <option value="Health & Medical">Health & Medical</option>
+              <option value="Other">Other</option>
+            </select>
+            <span id="category-error" class="error-message" role="alert"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="expense-date">Date *</label>
+            <input type="date" id="expense-date" required aria-describedby="date-error" />
+            <span id="date-error" class="error-message" role="alert"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="expense-notes">Notes (Optional)</label>
+            <textarea id="expense-notes" rows="3" placeholder="Additional details..."></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" id="save-expense-btn" class="btn btn-primary" style="flex: 1;">Save Expense</button>
+            <button type="button" id="cancel-edit-btn" class="btn btn-secondary hidden">Cancel</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Expense List & Filters -->
+      <section class="card table-card" aria-label="Expense History Table">
+        <div class="card-header flex-between margin-bottom-sm">
+          <h2>Expense Records</h2>
+          <button id="clear-all-btn" class="btn btn-sm btn-danger-outline">Clear All</button>
+        </div>
+
+        <div class="filter-controls-grid margin-bottom-sm">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="search-input">Search</label>
+            <input type="text" id="search-input" placeholder="Search title or notes..." />
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="filter-category">Category</label>
+            <select id="filter-category">
+              <option value="ALL">All Categories</option>
+              <option value="Food & Dining">Food & Dining</option>
+              <option value="Transportation">Transportation</option>
+              <option value="Utilities">Utilities</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Shopping">Shopping</option>
+              <option value="Health & Medical">Health & Medical</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="filter-date-from">From Date</label>
+            <input type="date" id="filter-date-from" />
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="filter-date-to">To Date</label>
+            <input type="date" id="filter-date-to" />
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="filter-min-amount">Min Amount (₹)</label>
+            <input type="number" id="filter-min-amount" placeholder="0" min="0" step="0.01" />
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="filter-max-amount">Max Amount (₹)</label>
+            <input type="number" id="filter-max-amount" placeholder="Any" min="0" step="0.01" />
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="sort-expenses">Sort By</label>
+            <select id="sort-expenses">
+              <option value="newest">Date: Newest First</option>
+              <option value="oldest">Date: Oldest First</option>
+              <option value="amount-high">Amount: High to Low</option>
+              <option value="amount-low">Amount: Low to High</option>
+              <option value="title-az">Title: A to Z</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="filter-status-row flex-between margin-top-sm margin-bottom-sm">
+          <span id="filter-results-count" class="filter-count-text">Showing 0 of 0 expenses</span>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <span id="active-filter-badge" class="badge hidden">Filtered</span>
+            <button id="clear-filters-btn" class="btn btn-sm btn-outline hidden">Reset Filters</button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="expense-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Notes</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="expenses-tbody"></tbody>
+          </table>
+        </div>
+
+        <div id="no-expenses-message" class="empty-state text-center pad-lg hidden">
+          <p id="empty-state-text" class="text-muted">No expenses found matching your active filters.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <div class="container footer-container">
+      <p class="footer-line">Created by Nandlal Gupta | Contact: <a href="mailto:nandlalgupta1809@gmail.com" class="footer-link">nandlalgupta1809@gmail.com</a></p>
+      <p class="footer-line">&copy; 2026 All rights reserved. Disclaimer: This application is provided for expense calculation and personal use only.</p>
+    </div>
+  </footer>
+
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <div id="confirm-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-content card" style="max-width: 400px; margin: 80px auto;">
+      <h2 id="modal-title">Are you sure?</h2>
+      <p id="modal-desc" style="margin: 12px 0; color: var(--text-muted); font-size: 0.9rem;">This action cannot be undone.</p>
+      <div class="form-actions flex-between" style="justify-content: flex-end; gap: 10px;">
+        <button id="modal-cancel-btn" class="btn btn-secondary">Cancel</button>
+        <button id="modal-confirm-btn" class="btn btn-danger">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
